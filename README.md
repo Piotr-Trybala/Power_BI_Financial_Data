@@ -41,7 +41,12 @@ Its goal is to transfrorm complex financial data into a clear overview, allowing
 One of the first issues visible in the dataset is the presence of fractional values in the *`Units Sold`* column. Since units sold should always be whole numbers, these observations may introduce inconsistencies, affecting further results and interpretations.
 
 ---
-To ensure data reliability, I created a new column *`[New] Units Sold`* - where all values are rounded down. Based on this corrected field, I Recalculated several key indicators to ensure they now use corrected data:
+
+### 2. Fixing *`Units Sold`*
+
+To ensure data reliability, I created a new column *`[New] Units Sold`* - where all values are rounded down. Based on this corrected field, I recalculated several key indicators to ensure they now use corrected data
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/7aa13a369c931439469b76a0d62e39fe1871aa23/Screenshots/Data%20with%20new%20columns.png)
 
 - **`[New] Gross Sales`** - recalculated by multiplying **`Sale Price`** by the corrected *`[New] Units Sold`*. AS a result, **`[New] Gross Sales`** is slightly lower for records where fractional units previously existed.
 - **`[New] Sales`** - represents net sales after discounts, recalculated using updated gross values.
@@ -50,17 +55,30 @@ To ensure data reliability, I created a new column *`[New] Units Sold`* - where 
 - **`[New] COGS`** - recomputed using the corrected units: **`[New] Units Sold`** * **`Manufacturing Price`** * **`Coeficient`**
 - **`[New] Profit`** - final corrected metric computed as: **`[New] Sales`** - **`[New] COGS`**
   
+---
+
+### 3. Changing the *`Date`* 
+
+The dates in the report are all set to the first day of each month, which suggests that the values represent data for the previous month. To reflect this correctly, I adjusted each date to the last day of the preceding month.
 
 
-
-
-
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ae4724b48aa742d0eed65e6c6b2977cef1319e6/Screenshots/segments.png)
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/a5378ee35da3987ce870c8ec6e41534e1f9b4f3c/Screenshots/Date.png)
 
 ---
 
-### 2. Creating *`runs_data`* database
+### 4. Uploading the data into Power BI and further data cleaning
 
+After uploading the data into Power BI I corrected misspeled names in *`Segment`* column, changed type of data to fit the actual values and added *`[New] Discount Rate`* column for future visuals.
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/1d3d64ba8dbd9ee00c06ec971ef78c77ea2ec790/Screenshots/Data%20sheet.png)
+
+---
+
+Next step was to create additional table for the Dates, called *`Calendar`* table, which consists of Date, Report Date and Year, Month, Month Name columns extracted from Report Date
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/35bc496d44fa03cc1093d8521a363ef4c5567408/Screenshots/Calendar.png)
+
+---
 ```sql
 DROP DATABASE IF EXISTS runs_data;
 CREATE DATABASE IF NOT EXISTS runs_data
