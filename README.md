@@ -25,10 +25,9 @@ Main fields include:
 
 ## 🎯 Goal
 
-The main goal of this project is to transform raw running data collected from a Garmin watch into a structured SQL database that enables detailed analysis. Table **`runs`** captures summary metrics of each workout, while table **`segments`** provides a detailed breakdown of each session into its individual components. This structure allows both macro (long-term progress) and micro (intra-session performance) analysis. Through this approach, it becomes possible to:
-- **track progress** - evaluate improvement in pace, endurance and heart rate across training sessions and training segments, 
-- **analyse training structure** - explore the distribution of run types and how training intensity evolved closed to race day,
-- **assess consistency** - determine how systematically the entire training plan was executed and identify periods of high or low engagement.
+The purpose of this dashboard is to highlight the most important financial insights that enable stakeholders to make informed, data-driven decisions. By visualizing key metrics such as sales performance, discount impact, profitability and regional trends, the dashboard supports effective resource allocation, production planning and market strategy optimization.
+
+Its goal is to transfrorm complex financial data into a clear overview, allowing decision-makers to quickly identify opportunities or spot inefficiencies and take appropiate actions.
 
 ---
 
