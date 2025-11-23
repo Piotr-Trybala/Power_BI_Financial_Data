@@ -34,11 +34,26 @@ Its goal is to transfrorm complex financial data into a clear overview, allowing
 ## 🚀 Program Walk-through
 
 ### 1. First look into data
-*`runs`* table
+*`Financial data`* excel workbook
 
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ae4724b48aa742d0eed65e6c6b2977cef1319e6/Screenshots/runs.png)
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/53281d38ea59c872f158815d4c8b4a0fd547cf76/Screenshots/Financial%20data%20first%20look.png)
 
-*`segments`* table
+One of the first issues visible in the dataset is the presence of fractional values in the *`Units Sold`* column. Since units sold should always be whole numbers, these observations may introduce inconsistencies, affecting further results and interpretations.
+
+---
+To ensure data reliability, I created a new column *`[New] Units Sold`* - where all values are rounded down. Based on this corrected field, I Recalculated several key indicators to ensure they now use corrected data:
+
+- **`[New] Gross Sales`** - recalculated by multiplying **`Sale Price`** by the corrected *`[New] Units Sold`*. AS a result, **`[New] Gross Sales`** is slightly lower for records where fractional units previously existed.
+- **`[New] Sales`** - represents net sales after discounts, recalculated using updated gross values.
+- **`COGS Formula`** - before recalculating **`[New] COGS`**, I determined the original fodmula: **`Units Sold`** * **`Manufacturing Price`** * **`Coefficient`**
+- **`Coefficient`** - identified by reversing the initial COGS calculation **`(COGS/Units Sold) / Manufacturing Price`**
+- **`[New] COGS`** - recomputed using the corrected units: **`[New] Units Sold`** * **`Manufacturing Price`** * **`Coeficient`**
+- **`[New] Profit`** - final corrected metric computed as: **`[New] Sales`** - **`[New] COGS`**
+  
+
+
+
+
 
 ![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ae4724b48aa742d0eed65e6c6b2977cef1319e6/Screenshots/segments.png)
 
