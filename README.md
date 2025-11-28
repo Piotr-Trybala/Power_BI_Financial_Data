@@ -74,7 +74,7 @@ After uploading the data into Power BI I corrected misspeled names in *`Segment`
 
 ---
 
-Next step was to create additional table for the Dates, called *`Calendar`* table, which consists of Date, Report Date and Year, Month, Month Name columns extracted from Report Date
+Next step was to create additional table for the Dates, called *`Calendar`* table, which consists of Date, Report Date and Year, Month, Month Name columns extracted from Report Date and assigning them to right Fiscal Year and Fiscal Quarter which may be usefull in later stages.
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/35bc496d44fa03cc1093d8521a363ef4c5567408/Screenshots/Calendar.png)
 
