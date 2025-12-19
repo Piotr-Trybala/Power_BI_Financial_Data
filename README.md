@@ -79,6 +79,35 @@ Next step was to create additional table for the Dates, called *`Calendar`* tabl
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/35bc496d44fa03cc1093d8521a363ef4c5567408/Screenshots/Calendar.png)
 
 ---
+### 4. Creating measures
+
+For better interpretation I created measures using DAX, that I wish to use for my final visualisations
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/b7f5423f54fa67e5f0b127e560818abad371374c/Screenshots/Measures.png)
+
+---
+
+Some basic aggregate functions, to be used in further measures
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/973bc693ecd08b76e9b836611df049469067c678/Screenshots/Sum.png)
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/973bc693ecd08b76e9b836611df049469067c678/Screenshots/Divide.png)
+
+---
+
+Some more complex, meaningfull measures
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/973bc693ecd08b76e9b836611df049469067c678/Screenshots/Calculate.png)
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/973bc693ecd08b76e9b836611df049469067c678/Screenshots/Summarize.png)
+
+---
+
+And others that I find helpfull to clearly explain the outcome of analysis
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/973bc693ecd08b76e9b836611df049469067c678/Screenshots/Trend.png)
+
+---
 ```sql
 DROP DATABASE IF EXISTS runs_data;
 CREATE DATABASE IF NOT EXISTS runs_data
