@@ -33,18 +33,18 @@ Its goal is to transfrorm complex financial data into a clear overview, allowing
 
 ## 🚀 Program Walk-through
 
-### 1. First look into data
+### 1. Initial data inspection
 *`Financial data`* excel workbook
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/53281d38ea59c872f158815d4c8b4a0fd547cf76/Screenshots/Financial%20data%20first%20look.png)
 
-One of the first issues visible in the dataset is the presence of fractional values in the *`Units Sold`* column. Since units sold should always be whole numbers, these observations may introduce inconsistencies, affecting further results and interpretations.
+During the initial review of the dataset, one major issue becomes apparent - presence of fractional values in the *`Units Sold`* column. Since units sold should always be represented as whole numbers, these values may introduce inconsistencies and negatively impact subsequent calculations and interpretations.
 
 ---
 
-### 2. Fixing *`Units Sold`*
+### 2. Correcting *`Units Sold`*
 
-To ensure data reliability, I created a new column *`[New] Units Sold`* - where all values are rounded down. Based on this corrected field, I recalculated several key indicators to ensure they now use corrected data
+To improve data reliability, I created a new column *`[New] Units Sold`* - where all values are rounded down to the nearest whole number. Based on this corrected field, several key financial indicators were recalculated to ensure consistency across the dataset. 
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/7aa13a369c931439469b76a0d62e39fe1871aa23/Screenshots/Data%20with%20new%20columns.png)
 
@@ -57,9 +57,9 @@ To ensure data reliability, I created a new column *`[New] Units Sold`* - where 
   
 ---
 
-### 3. Changing the *`Date`* 
+### 3. Adjusting the *`Date`* column 
 
-The dates in the report are all set to the first day of each month, which suggests that the values represent data for the previous month. To reflect this correctly, I adjusted each date to the last day of the preceding month.
+All dates in the dataset are set to the first day of each month, suggesting that the reported values correspond to the previous reporting period. To reflect this more accurately, each date was adjusted to represent the last day of the preceding month.
 
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/a5378ee35da3987ce870c8ec6e41534e1f9b4f3c/Screenshots/Date.png)
@@ -68,26 +68,27 @@ The dates in the report are all set to the first day of each month, which sugges
 
 ### 4. Uploading the data into Power BI and further data cleaning
 
-After uploading the data into Power BI I corrected misspeled names in *`Segment`* column, changed type of data to fit the actual values and added *`[New] Discount Rate`* column for future visuals.
+After importing the data into Power BI, further cleaning steps were performed. These included correcting misspelled values in the *`Segment`* column, adjusting data types to match actual values, and creating a new column *`[New] Discount Rate`* to support future visualizations.
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/1d3d64ba8dbd9ee00c06ec971ef78c77ea2ec790/Screenshots/Data%20sheet.png)
 
 ---
 
-Next step was to create additional table for the Dates, called *`Calendar`* table, which consists of Date, Report Date and Year, Month, Month Name columns extracted from Report Date and assigning them to right Fiscal Year and Fiscal Quarter which may be usefull in later stages.
+As the next step, a dedicated date dimension table —*`Calendar`*— was created. This table includes Date, Report Date, and derived attributes such as Year, Month, and Month Name. Additionally, each record was assigned to the appropriate Fiscal Year and Fiscal Quarter, enabling more advanced time-based analysis in later stages.
+
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/35bc496d44fa03cc1093d8521a363ef4c5567408/Screenshots/Calendar.png)
 
 ---
-### 4. Creating measures
+### 5. Creating analytical measures
 
-For better interpretation I created measures using DAX, that I wish to use for my final visualisations
+To enhance interpretability and support meaningful insights, a set of DAX measures was created for use in the final dashboard visualizations.
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/b7f5423f54fa67e5f0b127e560818abad371374c/Screenshots/Measures.png)
 
 ---
 
-Some basic aggregate functions, to be used in further measures
+Basic aggregate measures used as building blocks for more advanced calculations:
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/973bc693ecd08b76e9b836611df049469067c678/Screenshots/Sum.png)
 
@@ -95,7 +96,7 @@ Some basic aggregate functions, to be used in further measures
 
 ---
 
-Some more complex, meaningfull measures
+More advanced and analytically meaningful measures:
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/973bc693ecd08b76e9b836611df049469067c678/Screenshots/Calculate.png)
 
@@ -103,7 +104,7 @@ Some more complex, meaningfull measures
 
 ---
 
-And others that I find helpfull to clearly explain the outcome of analysis
+Additional measures designed to clearly communicate trends and analytical outcomes:
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/973bc693ecd08b76e9b836611df049469067c678/Screenshots/Trend.png)
 
