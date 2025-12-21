@@ -157,41 +157,38 @@ Below the main chart, two supporting visuals provide additional breakdowns:
 
 alowing user to easily filter for each the elements.
 
-#### 6.2 *`Products and Countries`* dashboard
+#### 6.3 *`Products and Countries`* dashboard
 
-Next dashboard shows only two visuals, one allowing to filter by Country and second using hierarchical distribution 
+The next dashboard consists of two focused visuals. The first one allows users to filter the data by Country, while the second leverages a *`Country Hierarchy`* that breaks down results by Segment and then by Product. This hierarchical structure enables users to drill deeply into profitability across different markets, making it easier to identify country-specific performance drivers and uncover variations at both segment and product levels.
 
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/ad510214ac022f15800c98cdcd3c6455df76f925/Screenshots/Products%20and%20Countries%20hierarchy.png)
 
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/968ea6757c2f6c1609b7fa8a80a646f9c946c112/Screenshots/Products%20and%20Countries.png)
+
+#### 6.4 *`Products Countries and Discounts`* dashboard
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/968ea6757c2f6c1609b7fa8a80a646f9c946c112/Screenshots/Products%20Countries%20and%20Discounts.png)
+
+The *`Products Countries and Discounts`* dashboard is designed to analyze revenue and profitability through the lens of applied discount strategies. Its primary purpose is to help understand how different discount levels influence customer behavior across products, segments, and geographic markets, enabling data-driven pricing decisions.
+
+A key focus of this dashboard is the breakdown of sales and profit by *`Discount Band`*, which allows users to evaluate how revenue is distributed across different discount levels (None, Low, Medium, High). By comparing Total Sales with Total Profit for each discount band, stakeholders can quickly identify which pricing strategies generate volume and which ones truly drive profitability.
+
+Together, these visuals provide a comprehensive framework for understanding the relationship between discounts, consumer behavior, and financial outcomes. The dashboard supports strategic decisions related to pricing optimization, market-specific discount policies, and long-term profitability management.
+
+#### 6.5 *`Profit and Discounts over time`* dashboard
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/968ea6757c2f6c1609b7fa8a80a646f9c946c112/Screenshots/Profit%20and%20Discounts%20over%20time.png)
+
+The *`Profit and Discounts over time`* dashboard is designed to examine the dynamic relationship between discounting strategies and profitability across time. Its primary objective is to complement previous analysis and help determine whether increases in discounts effectively stimulate profit growth, or whether they erode margins without delivering sustainable financial benefits.
 
 ---
 
 ## Insights 👀
 
-The analysis of the training plan revealed a generally consistent running routine with only one week without any recorded session and four weeks with just a single training unit. Overall, training sessions were performed regularly throughout the program. The highest training frequency was observed during weeks 5 and 6, indicating a mid-plan workload peak.
+The analysis across all dashboards leads to several key business insights regarding profitability drivers, customer behavior, and pricing strategy effectiveness.
 
-The most frequently performed session type was **`Easy run`**, which dominated the overall structure of the training plan. The longest sessions occurred in the later stages (weeks 20-32), which aligns with typical strategies, where longer runs are introduced progressively into the training plan.
-
-However, a critical obserwvtion is that the current classification of **`Easy run`** session groups together very different types of workout, including short recovery jogs, regular aerobic runs and long endurance runs. This lack of differentiation makes it difficult to analyze performance trends accurately.
-
-A more meaningful categorization would be to split **`Easy run`** into:
-
-- **`Recovery run`** - short, easy sessions aimed to active recovery,
-- **`Short run`** - standard aerobic runs,
-- **`Long run`** - extended endurance-building efforts. 
-
-Without this categorization, identifying a potential downward trend in pace (improvement) for **`Easy runs`** is challenging, as faster aerobic sessions are mixed with slower recovery runs.
-
-The overall dataset structure is suitable for further analysis, such as calculating rolling averages of total distance, identifying performance trends and exploring correlations between training volume and pace improvements, but requires previously mentioned changes and longer observation period to produce more meaningful insights.
-
-## 💡 Key Skills Demonstrated
-- Relational database design – structured raw training data into a clean, well-normalized SQL schema with appropriate keys and constraints.
-- Data cleaning and transformation – identified and corrected issues with time formatting, column naming, and data consistency; converted non-aggregable TIME data into numeric formats suitable for analysis.
-- Exploratory data analysis using SQL – performed time-series analysis to uncover training patterns, workload peaks, and session distribution across different run types.
-- Analytical thinking – recognized classification limitations within the dataset and proposed a more meaningful categorization strategy to enable deeper performance insights.
-- Aggregate functions – SUM(), AVG(), MIN(), MAX(), COUNT().
-- String & date/time manipulation – MAKETIME(), TIME_TO_SEC(), SEC_TO_TIME(), DATE_FORMAT(), used for converting and standardizing non-aggregable time data.
-- Conditional logic – CASE WHEN expressions to classify runs and handle data irregularities.
-- JOIN - to combine run-level and segment-level datasets for analysis.
-- Subqueries – applied in both SELECT and FROM clauses to calculate intermediate metrics.
-- Window functions - AVG() OVER(PARTITION BY ...) to derive rolling averages and segment rankings.
+- The company demonstrates financial stability – the Average Monthly Profit Change has been positive for most of the analyzed period,
+- The most profitable segment is clearly Government, followed by Small Business,
+- The highest profit was generated by the product Paseo,
+- The most lucrative markets are France, Germany, and Canada. Interestingly, for Paseo specifically, the largest profits come from Canada, the USA, and Mexico,
+- Applying discounts does not appear to have a consistent impact on the performance of Paseo, warranting further investigation. At times, discounts even produce counterintuitive results: when the discount is substantial, profits decrease. This raises questions about whether the discount was necessary, too high, or if the product was sold below a profitable threshold, or if other factors are at play. It is worth noting that initially, high discounts did coincide with increased profits, suggesting the underlying cause may not be straightforward.
