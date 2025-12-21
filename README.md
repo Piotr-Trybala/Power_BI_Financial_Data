@@ -109,296 +109,60 @@ Additional measures designed to clearly communicate trends and analytical outcom
 ![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/973bc693ecd08b76e9b836611df049469067c678/Screenshots/Trend.png)
 
 ---
-```sql
-DROP DATABASE IF EXISTS runs_data;
-CREATE DATABASE IF NOT EXISTS runs_data
-	CHARACTER SET 'utf8mb4' 
-	COLLATE 'utf8mb4_unicode_ci';
-SHOW DATABASES;
-USE runs_data;
-```
-#### 2.1 Creating *`runs`* table
-```sql
-CREATE TABLE runs (
-	run_id INT AUTO_INCREMENT PRIMARY KEY,
-    run_date DATE NOT NULL,
-    run_type ENUM('Sprint series', 'Easy run', 'Progressive run') NOT NULL,
-    total_distance_km DECIMAL(5,2),
-    total_time TIME
-	);
-```
-Filling the data manually into the table.
-```sql
-INSERT INTO runs (run_date, run_type, total_distance_km, total_time)
-VALUES 
-	(STR_TO_DATE('26.06.2025', '%d.%m.%Y'), 'Sprint series', 5.400, '00:40:38'),
-	(STR_TO_DATE('30.06.2025', '%d.%m.%Y'), 'Easy run', 6.370, '00:40:00'),
-	...
-	(STR_TO_DATE('12.10.2025', '%d.%m.%Y'), 'Easy run', 21.310, '01:57:09');
-```
-#### 2.2 Creating *`segments`* table
-```sql
-CREATE TABLE segments (
-	segment_id INT AUTO_INCREMENT PRIMARY KEY,
-    run_id INT,
-    segment_number INT,
-    segment_type ENUM('Cooldown', 'Fast run', 'Rest', 'Run', 'Slow run', 'Sprint', 'Warmup') NOT NULL,
-    segment_distance DECIMAL(5,2),
-    segment_time TIME,
-    avg_pace TIME,
-    avg_hr INT,
-    max_he INT,
-    FOREIGN KEY (run_id) REFERENCES runs(run_id)
-	);
-```
-Filling the data into segments table using Table Data Import Wizard.
 
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2aee9ed4ffcbaaeb73056ad286c9dae6ccee2ea4/Screenshots/Import%20wizard.png)
+### 6. Creating visualisations 
+
+#### 6.1 *`General Overview`* dashboard
+This dashboard is designed to provide a clear, high-level overview of the company's financial performence while allowing stakeholders to quickly drill down into the most important dimensions of the data. Each visual was selected to support decision-making related to profitability, resource allocation and market performance.
+
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/ad510214ac022f15800c98cdcd3c6455df76f925/Screenshots/General%20overview.png)
+
+At the top of the dashboard, an *`advanced Card visual`* is divided into four sections presenting key financial measures for both the entire selected period and the previous fiscal year. This allows for an immediate comparison of current performance against historical benchmarks.
+
+To complement absolute values, the dashboard includes calculated measures such as:
+- Year-over-Year Profit Change,
+- Average Monthly Profit Change.
+
+To provide an immediate visual cue, the dashboard includes a *`trend indicator`* represented by an arrow that signals whether performance increased or decreased compared to the previous month.
+The arrow is driven by a dedicated Trend measure, allowing users to quickly identify positive or negative month-over-month changes without the need for deeper numerical analysis.
+
+These metrics help stakeholders assess growth dynamics rather than focusing solely on static totals.
+
+A *`bar chart`* visualizes Total Profit by Segment, enabling quick comparison across customer groups.
+*`Conditional formatting`* is applied to highlight segments generating losses in red, making underperforming areas immediately visible and actionable.
+
+A map visual displays the Sum of Profit by Country, providing geographic context to financial performance. This helps identify the most profitable markets and supports decisions related to regional expansion, optimization, or cost control.
+
+To enable a more in-depth analysis of specific periods, the dashboard includes a date slicer that allows stakeholders to dynamically filter all visuals by time.
+This functionality makes it possible to focus on selected months or years, compare performance across different time ranges, and analyze trends during periods of particular interest, such as peak sales months or underperforming intervals.
 
 ---
+#### 6.2 *`Time analysis`* dashboard
 
-#### 2.3 Overview of created tables
+The *`Time analysis`* dashboard focuses on understanding how profitability evolves over time, combining relative performance metrics with absolute financial results. Its primary goal is to help identify trends, seasonality patterns, and periods of increased or decreased efficiency.
 
-*`runs`* table
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/ad510214ac022f15800c98cdcd3c6455df76f925/Screenshots/Time%20analysis.png)
 
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/63a8bd1e4d6bf7b994bb1208c366d147381a63eb/Screenshots/runs_table_overview.png)
+The core visual of the dashboard is *`dual-axis line chart`* that presents:
 
-*`segments`* table
+- Profit margin (%) over time,
+- Total Profit (absolute value) over the same reporting periods.
 
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/63a8bd1e4d6bf7b994bb1208c366d147381a63eb/Screenshots/segments_table_overview.png)
+By combining these two measures in a single visual, the dashboard allows users to analyze not only whether profit is increasing or decreasing, but also why. For example, it becomes possible to identify situations where Total Profit grows while Profit Margin declines, indicating rising costs or pricing pressure.
 
-Testing aggregate functions on time-based columns:
+Below the main chart, two supporting visuals provide additional breakdowns: 
 
-```sql
-SELECT segment_type,AVG(avg_pace)																	
-FROM segments
-GROUP BY segment_type;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/3d341610b5d2233c0b01f1059c0a37c5750556b9/Screenshots/type_time_avg.png)
+- *`Total Profit by Product`*
+- *`Total Profit by Segment`*
 
-There are few issues with data:
-- **`total_time`** column - data type is *TIME* which can cause issues with aggregate functions (**`runs`** table)
-- **`max_he`** column - typo in column name, max_he instead of max_hr (**`segments`** table)
-- **`segment_time`** and **`avg_pace`** columns - wrong *TIME* format, seconds are taken as minutes and minutes as hours (**`segments`** table)
-- **`segment_time`** and **`avg_pace`** columns - data type is *TIME* which can cause issues with aggregate functions (**`seconds`** table)
+alowing user to easily filter for each the elements.
 
----
+#### 6.2 *`Products and Countries`* dashboard
 
-#### 2.4 Data cleaning 
+Next dashboard shows only two visuals, one allowing to filter by Country and second using hierarchical distribution 
 
-##### Add column for total time in seconds (*`runs`* table) 
+![image_alt](https://github.com/Piotr-Trybala/Power_BI_Financial_Data/blob/ad510214ac022f15800c98cdcd3c6455df76f925/Screenshots/Products%20and%20Countries%20hierarchy.png)
 
-```sql
-ALTER TABLE runs
-	ADD COLUMN total_time_sec INT AFTER total_time;
-UPDATE runs
-SET 
-	total_time_sec = TIME_TO_SEC(total_time);
-```
----
-
-##### Correct typo in column name (*`segments`* table)
-
-```sql
-ALTER TABLE segments 
-	RENAME COLUMN max_he TO max_hr;
-```
-
-##### Correct wrong TIME format before converting into seconds (*`segments`* table)
-
-The *`segment_time`* and *`avg_pace`* columns were imported in incorrect format - seconds were interpreted as minutes and minutes as hours. To fix this, we create new columns using the *`MAKETIME()`* function with *`HOUR`* and *`MINUTE`* as arguments. But first, we need to check for odd results in incorrectly imported data to make sure that functions are applicable.
-
-```sql
-SELECT MAX(segment_time), MAX(avg_pace)
-FROM segments;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/c4edf9b01cda3db862e7bf537f72ec7a2975267b/Screenshots/MAXs.png)
-
-Since no value exceeds 60 hours, we can safely apply the transformation.
-
-```sql
-ALTER TABLE segments																				
-	ADD COLUMN segment_time_fixed TIME AFTER segment_time,
-    ADD COLUMN avg_pace_fixed TIME AFTER avg_pace;
-```
-Fill the new columns with corrected values using *`MAKETIME`* functions
-
-```sql
-UPDATE segments
-SET
-	segment_time_fixed = MAKETIME(0, HOUR(segment_time), MINUTE(segment_time)),
-    avg_pace_fixed = MAKETIME(0, HOUR(avg_pace), MINUTE(avg_pace));
-```
-
-##### Convert TIME to seconds (INT)
-
-```sql
-ALTER TABLE segments																				
-	ADD COLUMN segment_time_sec INT AFTER segment_time_fixed,
-    ADD COLUMN avg_pace_sec INT AFTER avg_pace_fixed;
-UPDATE segments
-SET 
-	segment_time_sec = TIME_TO_SEC(segment_time_fixed),
-	avg_pace_sec = TIME_TO_SEC(avg_pace_fixed);
-```
----
-##### Overview of the tables after Data Cleaning
-
-*`runs`* table
-
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/7768d21c0555f4f12f081aa0b75fe7c6de6f4693/Screenshots/runs_updated.png)
-
-*`segments`* table
-
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/7768d21c0555f4f12f081aa0b75fe7c6de6f4693/Screenshots/segments_updated.png)
-
-Testing aggregate functions on new columns:
-
-```sql
-SELECT 																								
-	segment_type, 
-    ROUND(AVG(avg_pace_sec),2) AS avg_pace_sec, 		
-	SEC_TO_TIME(ROUND(AVG(avg_pace_sec))) AS avg_pace_formatted
-FROM segments
-GROUP BY segment_type;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/478b5825cc5f526d496304bfd39e0a66802c03de/Screenshots/aggregate_functions_new.png)
-
----
-### 3. SQL Exploratory Analysis
-
-#### 3.1 How many runs of each type were completed during training period?
-
-```sql
-SELECT 
-	run_type, 
-    COUNT(*) AS number_of_runs																		
-FROM runs
-GROUP BY run_type
-ORDER BY number_of_runs DESC;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ea3d6cc3012220287c3ef2491871c8ef85ae553/Screenshots/How%20many%20runs%20of%20each%20type%20were%20completed%20during%20training%20period.png)
-
-
-#### 3.2 What is the average distance and duration for each run type?
-
-```sql
-SELECT			
-	run_type,
-    ROUND(AVG(total_distance_km),2) AS average_distance,
-    SEC_TO_TIME(ROUND(AVG(total_time_sec))) AS average_duration
-FROM runs
-GROUP BY run_type
-ORDER BY average_distance DESC;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ea3d6cc3012220287c3ef2491871c8ef85ae553/Screenshots/What%20is%20the%20average%20distance%20and%20duration%20for%20each%20run%20type.png)
-
-
-#### 3.3 Which runs were the longest?
-
-```sql
-SELECT																								
-	run_date,
-	run_type,
-    total_distance_km,
-    total_time
-FROM runs
-ORDER BY total_distance_km DESC
-LIMIT 5; 
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ea3d6cc3012220287c3ef2491871c8ef85ae553/Screenshots/Which%20runs%20were%20the%20longest.png)
-
-#### 3.4 What is the average and maximum heart rate for each run type?
-
-```sql
-SELECT																								
-	r.run_type,
-    ROUND(AVG(s.avg_hr)) AS avg_hr,
-    MAX(s.max_hr) AS max_hr
-FROM runs AS r
-JOIN segments AS s
-USING (run_id)
-GROUP BY run_type;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ea3d6cc3012220287c3ef2491871c8ef85ae553/Screenshots/What%20is%20the%20average%20and%20maximum%20heart%20rate%20for%20each%20run%20type.png)
-
-#### 3.5 Which weeks had the highest total training volume?
-
-```sql
-SELECT																								
-	1+FLOOR(DATEDIFF(run_date, (SELECT MIN(run_date) FROM runs))/7) AS training_week,
-    COUNT(*) AS total_runs
-FROM runs
-GROUP BY training_week;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ea3d6cc3012220287c3ef2491871c8ef85ae553/Screenshots/Which%20weeks%20had%20the%20highest%20total%20training%20volume.png)
-
-#### 3.6 What is the average pace per segment type and to which run_type it belongs?
-
-```sql
-SELECT																								
-	r.run_type,
-    s.segment_type,
-    SEC_TO_TIME(ROUND(AVG(s.avg_pace_sec))) AS average_pace,
-    ROUND(AVG(s.avg_hr)) AS average_heart_rate
-FROM runs AS r
-JOIN segments AS s
-USING (run_id)
-GROUP BY r.run_type, segment_type;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ea3d6cc3012220287c3ef2491871c8ef85ae553/Screenshots/What%20is%20the%20average%20pace%20per%20segment%20type%20and%20to%20which%20run_type%20it%20belongs.png)
-
-#### 3.7 How average pace of segment type 'Run' evolved during each of Easy runs?
-
-```sql
-SELECT 				
-	run_id,
-    s.segment_type,
-    s.segment_distance,
-    SEC_TO_TIME(s.avg_pace_sec) AS pace_per_segment,
-    SEC_TO_TIME(ROUND(AVG(s.avg_pace_sec) OVER(
-		PARTITION BY run_id))) AS avg_segment_pace
-FROM runs AS r
-JOIN segments AS s
-USING (run_id)
-WHERE s.segment_type = 'Run'
-;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ea3d6cc3012220287c3ef2491871c8ef85ae553/Screenshots/How%20average%20pace%20of%20segment%20type%20'Run'%20evolved%20during%20each%20of%20Easy%20runs.png)
-
-#### 3.8 How many runs in Easy runs were 'Long runs' (over 15 km), 'Short runs' (7-15 km) and 'Recovery runs' (<7 km)?
-
-```sql
-SELECT	
-	CASE WHEN total_distance_km < 7 THEN 'Recovery run'
-		WHEN total_distance_km BETWEEN 7 AND 14 THEN 'Short run'
-        ELSE 'Long run' 
-	END AS run_lenth_category,
-    COUNT(*)
-FROM runs
-WHERE run_type = 'Easy run'
-GROUP BY run_lenth_category
-;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ea3d6cc3012220287c3ef2491871c8ef85ae553/Screenshots/How%20many%20runs%20Long%20runs%20Short%20runs%20and%20Recovery%20runs.png)
-
-#### 3.9 Which runs were faster than the overall average?
-
-```sql
-SELECT	
-	*,
-    SEC_TO_TIME(ROUND(total_time_sec/total_distance_km)) AS avg_run_pace,
-    SEC_TO_TIME(
-		ROUND((SELECT SUM(total_time_sec)/SUM(total_distance_km) 
-		FROM runs))) AS overall_average_pace
-FROM runs 
-WHERE (total_time_sec/total_distance_km) < (
-	SELECT SUM(total_time_sec)/SUM(total_distance_km)
-    FROM runs
-    )
-;
-```
-![image_alt](https://github.com/Piotr-Trybala/SQL_Runs_Data/blob/2ea3d6cc3012220287c3ef2491871c8ef85ae553/Screenshots/Which%20runs%20were%20faster%20than%20the%20overall%20average.png)
 
 ---
 
